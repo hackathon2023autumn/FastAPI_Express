@@ -1,0 +1,32 @@
+name: Check Submodules
+
+on:
+  pull_request:
+    branches:
+      - main # または対象のブランチ名
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          submodules: "true"
+
+      - name: Check backend submodule is up to date
+        run: |
+          cd backend
+          if [ $(git rev-parse HEAD) != $(git ls-remote origin -h refs/heads/main | cut -f1) ]; then
+            echo "Backend submodule is not up to date with the latest commit."
+            exit 1
+          fi
+
+      - name: Check frontend submodule is up to date
+        run: |
+          cd frontend
+          if [ $(git rev-parse HEAD) != $(git ls-remote origin -h refs/heads/main | cut -f1) ]; then
+            echo "Frontend submodule is not up to date with the latest commit."
+            exit 1
+          fi
