@@ -3,7 +3,7 @@ name: Check Submodules
 on:
   pull_request:
     branches:
-      - main # または対象のブランチ名
+      - develop
 
 jobs:
   check:
